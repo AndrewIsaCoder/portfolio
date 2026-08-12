@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { Shrink } from 'lucide-react'
+import Media from './media'
 
 export const DURATION = 600 // ms — Hero așteaptă atât înainte să demonteze
 
@@ -117,7 +118,7 @@ export default function ProjectView({ project, origin, closing, meta, onClose })
           type="button"
           aria-label="Close project"
           onClick={onClose}
-          className="group flex h-[var(--btn)] w-[var(--btn)] items-center justify-center rounded-[calc(var(--btn)*0.28)] bg-white text-[#111111] shadow-[0_2px_10px_rgba(0,0,0,0.04)] transition-[opacity,transform,box-shadow] duration-300 ease-[var(--ease-out-soft)] hover:shadow-[0_12px_26px_rgba(0,0,0,0.10)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]"
+          className="group flex h-[var(--btn)] w-[var(--btn)] items-center justify-center rounded-[calc(var(--btn)*0.28)] bg-white text-[#111111] transition-[opacity,transform] duration-300 ease-[var(--ease-out-soft)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]"
           style={{ transitionDelay: closing ? '0ms' : '260ms' }}
         >
           <span className="transition-transform duration-300 ease-[var(--ease-back)] group-hover:scale-110">
@@ -128,7 +129,7 @@ export default function ProjectView({ project, origin, closing, meta, onClose })
 
       <div
         ref={panel}
-        className="fixed z-40 overflow-hidden rounded-[24px] bg-[#0D0D0D] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.5)] lg:rounded-[32px]"
+        className="fixed z-40 overflow-hidden rounded-[24px] bg-[#0D0D0D] lg:rounded-[32px]"
       >
         <div
           ref={content}
@@ -136,11 +137,14 @@ export default function ProjectView({ project, origin, closing, meta, onClose })
           style={{ transitionDelay: closing ? '0ms' : '180ms' }}
         >
           <div className="flex min-h-0 flex-1 items-center justify-center p-6">
-            <img
+            <Media
               src={project.detail}
+              video={project.video}
               alt={project.title}
-              className={`rounded-[20px] object-contain shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] lg:rounded-[28px] ${
-                wide ? 'h-[86%] max-w-[86%]' : 'max-h-full max-w-full'
+              // Se mulează pe raportul sursei: cele late umplu lățimea, cele
+              // înalte umplu înălțimea, fără cutie pătrată în jur.
+              className={`rounded-[20px] object-contain lg:rounded-[28px] ${
+                wide ? 'max-h-[86%] max-w-[86%]' : 'max-h-full max-w-full'
               }`}
             />
           </div>

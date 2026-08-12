@@ -127,7 +127,11 @@ export default function Hero() {
   // Același bloc apare fie în coloana din stânga (ecran lat), fie în panou.
   const projectMeta = (dark) =>
     current && (
-      <>
+      // Panoul ocupă ~52% din lățime și e poziționat fix, deci titlul trebuie să
+      // se rupă înainte să ajungă sub el. Spațiul rămas scade odată cu ecranul.
+      <div
+        className={`flex flex-col ${dark ? '' : 'lg:max-w-[min(520px,calc(48vw-80px))]'}`}
+      >
         <h1 className={`${HEADING} font-medium ${dark ? 'text-white' : 'text-[#111111]'}`}>
           {current.title}
         </h1>
@@ -162,7 +166,7 @@ export default function Hero() {
             </Btn>
           </div>
         </div>
-      </>
+      </div>
     )
 
   return (

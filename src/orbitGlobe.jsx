@@ -43,7 +43,7 @@ export default function OrbitGlobe({ width = 440, height = 460, scale = 1, label
                     }}
                   >
                     <div
-                      className="grid place-items-center rounded-full border border-[#E6E6E9] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+                      className="grid place-items-center rounded-full border border-[#E6E6E9] bg-white"
                       style={{
                         width: CHIP,
                         height: CHIP,

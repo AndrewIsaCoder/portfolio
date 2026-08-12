@@ -1,14 +1,14 @@
 import { useRef } from 'react'
+import Media from './media'
 
-export default function Card({ title, screenshot, background, dimmed = false, onOpen }) {
+export default function Card({ title, screenshot, video, background, dimmed = false, onOpen }) {
   const ref = useRef(null)
 
   // Cardurile din spate sunt aproape pe muchie, așa că le randăm ca o suprafață
-  // plată — exact lamelele gri din design, fără costul imaginilor.
+  // plată — exact lamelele gri din design, fără costul imaginilor. Fără umbră:
+  // la 85° `box-shadow` se deformează odată cu elementul și iese o pată alungită.
   if (dimmed) {
-    return (
-      <div className="h-full w-full rounded-[32px] bg-[#E8E8E9] shadow-[0_18px_40px_-24px_rgba(0,0,0,0.25)]" />
-    )
+    return <div className="h-full w-full rounded-[32px] bg-[#E5E5E8]" />
   }
 
   return (
@@ -18,7 +18,7 @@ export default function Card({ title, screenshot, background, dimmed = false, on
       aria-label={`Open ${title}`}
       // Dreptunghiul măsurat la click e punctul de plecare al animației de extindere.
       onClick={() => onOpen?.(ref.current.getBoundingClientRect())}
-      className="group relative block h-full w-full cursor-pointer overflow-hidden rounded-[32px] bg-[#E8E8E9] text-left shadow-[0_30px_60px_-20px_rgba(0,0,0,0.28)] transition-[transform,box-shadow] duration-500 ease-[var(--ease-out-soft)] hover:-translate-y-2 hover:shadow-[0_44px_80px_-24px_rgba(0,0,0,0.34)] active:-translate-y-1 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]"
+      className="group relative block h-full w-full cursor-pointer overflow-hidden rounded-[32px] bg-[#E5E5E8] text-left transition-transform duration-500 ease-[var(--ease-out-soft)] hover:-translate-y-2 active:-translate-y-1 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]"
     >
       {background && (
         <img
@@ -30,10 +30,11 @@ export default function Card({ title, screenshot, background, dimmed = false, on
       )}
 
       <div className="relative flex h-full items-center justify-center">
-        <img
+        <Media
           src={screenshot}
+          video={video}
           alt={title}
-          className="w-[79%] rounded-[3px] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.03]"
+          className="w-[79%] rounded-[3px] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.03]"
         />
       </div>
 

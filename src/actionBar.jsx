@@ -7,9 +7,9 @@ const STEP = 55 // ms între butoane, ca rândul să intre în cascadă
 // Mărimea butonului și pasul rândului vin din --btn / --pitch (index.css), ca
 // poziționarea absolută de mai jos să rămână corectă la orice breakpoint.
 const BASE =
-  'group anim-pop flex h-[var(--btn)] w-[var(--btn)] items-center justify-center transition-[transform,box-shadow,background-color,border-radius,color] duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-[3px] active:translate-y-0 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]'
-const WHITE = `${BASE} rounded-[calc(var(--btn)*0.28)] bg-white text-[#111111] shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_26px_rgba(0,0,0,0.10)]`
-const DARK = `${BASE} rounded-full bg-[#111111] text-white shadow-[0_2px_10px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.24)]`
+  'group anim-pop flex h-[var(--btn)] w-[var(--btn)] items-center justify-center transition-[transform,background-color,border-radius,color] duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-[3px] active:translate-y-0 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111]'
+const WHITE = `${BASE} rounded-[calc(var(--btn)*0.28)] bg-white text-[#111111]`
+const DARK = `${BASE} rounded-full bg-[#111111] text-white`
 
 export function Icon({ children }) {
   return (

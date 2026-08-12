@@ -15,16 +15,16 @@ export const about = {
     [
       { t: 'Frontend & mobile developer', strong: true },
       {
-        t: ', building applications in React Native, TypeScript and Python — from Figma design to shipped screen.',
+        t: ', building interfaces in React Native, TypeScript and Python — from the Figma file to the shipped screen.',
       },
     ],
     [
-      { t: 'After studying at ' },
+      { t: 'I studied at ' },
       { t: 'Link Academy', strong: true },
-      { t: ', I interned at ' },
+      { t: ' and shipped React Native features at ' },
       { t: 'Access Memory', strong: true },
       {
-        t: ', building React Native features and reusable UI components alongside senior developers.',
+        t: ', the way a real team works: reusable components, feature branches, code review. On the side I keep one foot in data — pandas, scikit-learn and SQL.',
       },
     ],
   ],
@@ -43,7 +43,7 @@ export const chat = {
     [
       { t: 'Based in Bucharest', strong: true },
       {
-        t: ', open to frontend, mobile and junior full-stack roles. Fastest by email — I usually reply the same day.',
+        t: '. Email is the fastest way to reach me — I usually reply the same day. I’m on LinkedIn too.',
       },
     ],
   ],
