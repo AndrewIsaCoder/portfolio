@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import Hero from './Hero'
 import { Analytics } from '@vercel/analytics/react'
 
