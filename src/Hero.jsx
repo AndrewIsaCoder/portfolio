@@ -12,18 +12,23 @@ import { name, role, about, chat } from './content'
 
 const LEAVE = 240 // ms — trebuie să corespundă cu `.anim-leave` din index.css
 
-const HEADING = 'anim-rise text-[34px] leading-[1.05] tracking-[-0.03em] sm:text-[40px] lg:text-5xl'
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
 
 // Paragrafe cu fragmente accentuate + lista de mai jos, ca în design.
-function PanelBody({ data }) {
+// `compact` e pentru telefonul ținut orizontal, unde înălțimea e critică.
+function PanelBody({ data, compact }) {
+  const text = compact
+    ? 'max-w-[420px] text-[15px] leading-[1.3]'
+    : 'max-w-[560px] text-[20px] leading-[1.32] sm:text-[24px] lg:max-w-[700px] lg:text-[30px]'
+  const item = compact ? 'text-[13px] leading-[1.45]' : 'text-[17px] leading-[1.5] lg:text-[21px]'
+
   return (
     <div className="anim-rise">
       {data.paragraphs.map((segments, i) => (
         <p
           key={i}
-          className={`max-w-[560px] text-[20px] leading-[1.32] tracking-[-0.02em] text-[#A5A5AA] sm:text-[24px] lg:max-w-[700px] lg:text-[30px] ${
-            i ? 'mt-5 lg:mt-7' : ''
+          className={`tracking-[-0.02em] text-[#A5A5AA] ${text} ${
+            i ? (compact ? 'mt-3' : 'mt-5 lg:mt-7') : ''
           }`}
         >
           {segments.map((s, j) => (
@@ -34,17 +39,18 @@ function PanelBody({ data }) {
         </p>
       ))}
 
-      <p className="mt-8 text-[13px] font-medium tracking-[-0.01em] text-[#111111] lg:mt-12">
+      <p
+        className={`text-[13px] font-medium tracking-[-0.01em] text-[#111111] ${
+          compact ? 'mt-4' : 'mt-8 lg:mt-12'
+        }`}
+      >
         {data.listTitle}
       </p>
 
-      <ul className="mt-3 lg:mt-4">
-        {data.list.map((item) => (
-          <li
-            key={item.label}
-            className="text-[17px] leading-[1.5] tracking-[-0.02em] text-[#111111] lg:text-[21px]"
-          >
-            {item.label} <span className="text-[#A5A5AA]">({item.note})</span>
+      <ul className={compact ? 'mt-2' : 'mt-3 lg:mt-4'}>
+        {data.list.map((entry) => (
+          <li key={entry.label} className={`tracking-[-0.02em] text-[#111111] ${item}`}>
+            {entry.label} <span className="text-[#A5A5AA]">({entry.note})</span>
           </li>
         ))}
       </ul>
@@ -64,6 +70,10 @@ export default function Hero() {
 
   const { w, h } = useViewport()
   const wide = w >= 1024
+  // Telefonul ținut orizontal: destul de lat, dar prea scund pentru stivuire.
+  // Acolo tot pe două coloane trebuie mers, altfel teancul iese sub ecran.
+  const short = !wide && w >= 560 && h < 620
+  const row = wide || short
 
   // Pe ecran îngust pagina se poate derula, deci nu mai furăm scroll-ul.
   const { active, direction, goTo } = useDeckNav(
@@ -75,8 +85,13 @@ export default function Hero() {
   // recalculăm geometria la fiecare breakpoint.
   const scale = wide
     ? clamp(Math.min((w - 48) / 1278, h / 950), 0.55, 1)
-    : clamp(Math.min((w - 40) / 460, (h * 0.5) / 480), 0.4, 0.92)
-  const depth = w >= 1024 ? 2 : w >= 768 ? 1 : 0
+    : short
+      ? clamp(Math.min((w * 0.42) / 440, (h - 88) / 460), 0.4, 0.92)
+      : clamp(Math.min((w - 40) / 460, (h * 0.5) / 480), 0.4, 0.92)
+  const depth = wide ? 2 : !short && w >= 768 ? 1 : 0
+
+  const heading = short ? 'text-[26px] sm:text-[30px]' : 'text-[34px] sm:text-[40px] lg:text-5xl'
+  const HEADING = `anim-rise leading-[1.05] tracking-[-0.03em] ${heading}`
 
   const openPanel = useCallback((next) => {
     setLastPanel(next) // textul rămâne cel corect și în timp ce panoul iese
@@ -170,14 +185,24 @@ export default function Hero() {
     )
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#F2F2F2] lg:h-screen lg:overflow-hidden">
-      <div className="mx-auto flex min-h-screen max-w-[1278px] flex-col items-center justify-center gap-8 px-5 py-12 sm:px-6 lg:h-full lg:min-h-0 lg:flex-row lg:justify-between lg:gap-6 lg:py-0">
+    <main
+      className={`relative overflow-x-hidden bg-[#F2F2F2] ${
+        row ? 'h-screen overflow-hidden' : 'min-h-screen'
+      }`}
+    >
+      <div
+        className={`mx-auto flex max-w-[1278px] items-center px-5 sm:px-6 ${
+          row
+            ? `h-full flex-row justify-between gap-6 ${short ? 'py-4' : 'py-0'}`
+            : 'min-h-screen flex-col justify-center gap-8 py-12'
+        }`}
+      >
         {/* Pe ecran scund panoul poate depăși înălțimea; coloana se derulează
             singură, fiindcă `main` are overflow ascuns pentru lamelele teancului. */}
         <div
-          className={`relative z-30 flex w-full flex-col lg:max-h-full lg:w-auto lg:overflow-y-auto lg:py-2 lg:pr-4 ${
-            leaving ? 'anim-leave' : ''
-          }`}
+          className={`relative z-30 flex flex-col ${
+            row ? 'max-h-full w-auto overflow-y-auto py-2 pr-4' : 'w-full'
+          } ${leaving ? 'anim-leave' : ''}`}
         >
           {current && wide ? (
             projectMeta(false)
@@ -191,7 +216,7 @@ export default function Hero() {
                 {role}
               </p>
 
-              <div className="mt-10 lg:mt-20">
+              <div className={short ? 'mt-5' : 'mt-10 lg:mt-20'}>
                 <ActionBar
                   panel={panel}
                   lastPanel={lastPanel}
@@ -205,12 +230,18 @@ export default function Hero() {
                   lin în loc să sară. Închis, nu ocupă niciun pixel. */}
               <div
                 className={`grid transition-[grid-template-rows,opacity,margin] duration-500 ease-[var(--ease-out-soft)] ${
-                  panel ? 'mt-10 grid-rows-[1fr] opacity-100 lg:mt-14' : 'mt-0 grid-rows-[0fr] opacity-0'
+                  panel
+                    ? `grid-rows-[1fr] opacity-100 ${short ? 'mt-5' : 'mt-10 lg:mt-14'}`
+                    : 'mt-0 grid-rows-[0fr] opacity-0'
                 }`}
                 aria-hidden={!panel}
               >
                 <div className="overflow-hidden">
-                  <PanelBody key={lastPanel} data={lastPanel === 'about' ? about : chat} />
+                  <PanelBody
+                    key={lastPanel}
+                    data={lastPanel === 'about' ? about : chat}
+                    compact={short}
+                  />
                 </div>
               </div>
             </>
