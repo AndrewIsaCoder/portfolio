@@ -75,10 +75,12 @@ export default function Hero() {
   const short = !wide && w >= 560 && h < 620
   const row = wide || short
 
-  // Pe ecran îngust pagina se poate derula, deci nu mai furăm scroll-ul.
+  // Navigarea merge peste tot; `row` spune dacă pagina e fixă, ca hook-ul să
+  // știe când are voie să fure rotița și swipe-ul vertical.
   const { active, direction, goTo } = useDeckNav(
     projects.length,
-    wide && project === null && panel === null,
+    project === null && panel === null,
+    row,
   )
 
   // Teancul e o construcție 3D în pixeli, deci îl scalăm întreg în loc să-i
