@@ -201,9 +201,13 @@ export default function Hero() {
       >
         {/* Pe ecran scund panoul poate depăși înălțimea; coloana se derulează
             singură, fiindcă `main` are overflow ascuns pentru lamelele teancului. */}
+        {/* `pb-8 -mb-6`: în repaus conținutul se termină fix pe marginea cutiei,
+            așa că orice translație din animații ar depăși cu câțiva pixeli și ar
+            aprinde bara de derulare pentru o clipă. Padding-ul absoarbe mișcarea,
+            iar marginea negativă anulează creșterea, deci nimic nu se deplasează. */}
         <div
           className={`relative z-30 flex flex-col ${
-            row ? 'max-h-full w-auto overflow-y-auto py-2 pr-4' : 'w-full'
+            row ? 'max-h-full w-auto overflow-y-auto pt-2 pb-8 -mb-6 pr-4' : 'w-full'
           } ${leaving ? 'anim-leave' : ''}`}
         >
           {current && wide ? (
