@@ -21,10 +21,8 @@ export const about = {
     [
       { t: 'I studied at ' },
       { t: 'Link Academy', strong: true },
-      { t: ' and shipped React Native features at ' },
-      { t: 'Access Memory', strong: true },
       {
-        t: ', the way a real team works: reusable components, feature branches, code review. On the side I keep one foot in data — pandas, scikit-learn and SQL.',
+        t: ' and now build React Native features the way a real team does: reusable components, feature branches, code review. On the side I keep one foot in data — pandas, scikit-learn and SQL.',
       },
     ],
   ],
